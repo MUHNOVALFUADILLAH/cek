@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portofolio Web Developer</title>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script> -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary-color: #007bff;
+        --secondary-color: #6c757d;
+        --dark-color: #343a40;
+        --light-color: #f8f9fa;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* Navbar Styles */
+      .navbar {
+        transition: all 0.3s ease;
+      }
+
+      .navbar-scrolled {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Hero Section */
+      .hero {
+        min-height: 100vh;
+        position: relative;
+        background: #0f2027;
+        color: white;
+        padding: 100px 0;
+        overflow: hidden;
+      }
+
+      /* Card Styles */
+      .scene {
+        width: 250px;
+        height: 400px;
+        perspective: 1000px;
+        position: relative;
+        margin: auto;
+      }
+        
+      .card {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transition: transform 1s;
+        transform-style: preserve-3d;
+        transform: rotateY(0deg) rotateX(0deg);
+        cursor: grab;
+      }
+        
+      .card.dragging {
+        cursor: grabbing;
+      }
+        
+      .lanyard {
+        position: absolute;
+        width: 20px;
+        height: 100px;
+        background: linear-gradient(90deg, #1506ec 0%, #12089c 50%, #0c1ade 100%);
+        top: -100px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: -1;
+        border-radius: 4px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+      }
+        
+      .lanyard::before {
+        content: "STAFF";
+        position: absolute;
+        color: white;
+        font-weight: bold;
+        font-size: 12px;
+        top: 40px;
+        left: 50%;
+        transform: translateX(-50%) rotate(-90deg);
+        white-space: nowrap;
+      }
+        
+      .lanyard-clip {
+        position: absolute;
+        width: 30px;
+        height: 15px;
+        background: #ddd;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 3px 3px 0 0;
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+      }
+        
+      .card-front, .card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+        
+      .card-front {
+        background: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+        
+      .card-back {
+        background: #f3f3f3;
+        transform: rotateY(180deg);
+        padding: 20px;
+        box-sizing: border-box;
+      }
+        
+      .header {
+        height: 80px;
+        width: 100%;
+        background: linear-gradient(135deg, #1730c1 0%, #1228b7 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+      }
+        
+      .photo {
+        width: 120px;
+        height: 120px;
+        border-radius: 60px;
+        margin-top: 20px;
+        background: #eee;
+        border: 5px solid white;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+        
+      .photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+        
+      .photo-icon {
+        font-size: 60px;
+        color: #ccc;
+      }
+        
+      .details {
+        width: 100%;
+        padding: 20px;
+        box-sizing: border-box;
+        text-align: center;
+      }
+        
+      .name {
+        font-size: 15px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+        
+      .role {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 15px;
+      }
+        
+      .info {
+        font-size: 14px;
+        margin: 5px 0;
+        color: #333;
+      }
+        
+      .barcode {
+        width: 80%;
+        height: 50px;
+        margin: 10px auto;
+        background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px);
+      }
+        
+      .qr-code {
+        width: 100px;
+        height: 100px;
+        margin: 10px auto;
+        background: #fff;
+        padding: 5px;
+        box-sizing: border-box;
+      }
+        
+      .qr {
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(45deg, #000 25%, transparent 25%), 
+                          linear-gradient(-45deg, #000 25%, transparent 25%), 
+                          linear-gradient(45deg, transparent 75%, #000 75%), 
+                          linear-gradient(-45deg, transparent 75%, #000 75%);
+        background-size: 10px 10px;
+        background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+      }
+
+      #particles-js {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 0;
+      }
+
+      .hero .container {
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-content {
+        max-width: 700px;
+      }
+
+      .hero-img {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid white;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      }
+
+      /* About Section */
+      .about-card {
+        border-radius: 15px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+      }
+
+      .about-card:hover {
+        transform: translateY(-10px);
+      }
+
+      /* Projects Section */
+      .project-card {
+        border-radius: 10px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        height: 100%;
+      }
+
+      .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .project-img {
+        height: 200px;
+        object-fit: cover;
+      }
+
+      /* Skills Section */
+      .skill-item {
+        padding: 10px 15px;
+        border-radius: 30px;
+        margin: 5px;
+        font-weight: 500;
+        background-color: rgba(0, 123, 255, 0.1);
+        color: var(--primary-color);
+        transition: all 0.3s ease;
+        display: inline-block;
+      }
+
+      .skill-item:hover {
+        background-color: var(--primary-color);
+        color: white;
+      }
+
+      /* Contact Section */
+      .contact-icon {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: rgba(0, 123, 255, 0.1);
+        color: var(--primary-color);
+        font-size: 24px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+      }
+
+      .contact-card:hover .contact-icon {
+        background-color: var(--primary-color);
+        color: white;
+      }
+
+      /* Footer */
+      footer {
+        background-color: var(--dark-color);
+        color: white;
+      }
+
+      .social-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+        margin: 0 5px;
+        transition: all 0.3s ease;
+      }
+
+      .social-icon:hover {
+        background-color: white;
+        color: var(--primary-color);
+      }
+
+      /* Animation */
+      .animated {
+        animation-duration: 1s;
+        animation-fill-mode: both;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translate3d(0, 30px, 0);
+        }
+        to {
+          opacity: 1;
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      .fadeInUp {
+        animation-name: fadeInUp;
+      }
+
+      /* Scroll to Top Button */
+      .scroll-top {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        cursor: pointer;
+      }
+
+      .scroll-top.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .scroll-top:hover { 
+        background-color: var(--dark-color);
+      }
+      .social-icon {
+    color: #fff;
+    font-size: 1.2rem;
+    transition: 0.3s;
+  }
+
+  .social-icon:hover {
+    color: #0d6efd; /* Warna biru Bootstrap */
+  }
+
+      /* Improved Responsive Styles */
+      @media (max-width: 991px) {
+        .bottom {
+            justify-content: center;
+        }
+      
+        .hero {
+          padding: 80px 0;
+        }
+        
+        .hero-img {
+          width: 250px;
+          height: 250px;
+        }
+        
+        .hero-content {
+          text-align: center;
+          margin-bottom: 40px;
+        }
+        
+        .about-card {
+          margin-bottom: 20px;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .scene {
+          width: 200px;
+          height: 320px;
+          margin: 30px auto;
+          margin-top: 100px;
+
+        }
+        
+        .social-icons {
+          justify-content: center !important;
+          margin-top: 20px;
+        }
+        
+        .contact-form {
+          margin-top: 30px;
+        }
+        
+        .project-card {
+          margin-bottom: 20px;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+        
+        .scene {
+          width: 180px;
+          height: 290px;
+        }
+        
+        .section-heading h2 {
+          font-size: 1.8rem;
+        }
+        
+        .skill-item {
+          font-size: 0.8rem;
+          padding: 8px 12px;
+        }
+      }
+    </style>
+  </head>
+  <body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="70">
+    <!-- Navbar -->
+    <nav
+      id="navbar"
+      class="navbar navbar-expand-lg navbar-light bg-white fixed-top"
+    >
+      <div class="container">
+        <a class="navbar-brand fw-bold text-primary" href="#">
+          <span class="text-dark">Vall.</span>Dev_
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#hero">Beranda</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">Tentang</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#projects">Proyek</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#skills">Keahlian</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Kontak</a>
+            </li>
+          </ul>
+          <button class="btn btn-primary ms-lg-3 mt-3 mt-lg-0">Unduh CV</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div id="particles-js"></div>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 animated fadeInUp">
+                    <div class="hero-content" data-aos="fade-right" >
+                        <span class="badge bg-light text-primary fw-normal fs-6 mb-3">Web Developer</span>
+                        <h1 id="typed-text" class="display-3 fw-bold mb-3 " style="font-size: 50px;"></h1>
+                        <p class="lead mb-4">Saya adalah seorang web developer berpengalaman yang menciptakan solusi web modern dan responsif untuk memenuhi kebutuhan bisnis.</p>
+                        <div class="d-flex gap-3 flex-wrap bottom">
+                            <a href="#projects" class="btn btn-primary btn-lg mb-2">Lihat Karya</a>
+                            <a href="#contact" class="btn btn-outline-primary btn-lg mb-2">Hubungi Saya</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center animated fadeInUp" data-wow-delay="0.5s">
+                    <div class="scene scene--card ">
+                      <div class="card">
+                          <div class="lanyard"></div>
+                          <div class="lanyard-clip"></div>
+                          <div class="card-front">
+                              <div class="header">Kuaishou Technology</div>
+                              <div class="photo">
+                                  <img src="foto.jpg" alt="">
+                              </div>
+                              <div class="details">
+                                  <div class="name" >MUH NOVAL FUADDILLAH</div>
+                                  <div class="role">WEB DEVELOPER</div>
+                                  <div class="info">ID: 12345678</div>
+                                  <div class="info">Issued: 03/03/2025</div>
+                                  <div class="barcode"></div>
+                              </div>
+                          </div>
+                          <div class="card-back">
+                              <h3>Kuaishou Technology</h3>
+                              <p style="font-size: 12px;">This ID card must be visible at all times while on company premises. Lost cards should be reported immediately to security.</p>
+                              <p style="font-size: 12px;">If found, please return to:</p>
+                              <p style="font-size: 12px; font-weight: bold;">COMPANY HEADQUARTERS<br>Palo Alto, CA 94306, USA<br>Palo Alto, California, Amerika Serikat, 94306</p>
+                              <div class="qr-code">
+                                  <div class="qr"></div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+      <div class="container py-5">
+        <div class="row justify-content-center mb-5">
+          <div class="col-lg-6 text-center">
+            <h2 class="fw-bold mb-3">Tentang Saya</h2>
+            <p class="text-muted">
+              Kenali lebih lanjut pengalaman dan latar belakang saya
+            </p>
+          </div>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-4" data-aos="zoom-in">
+            <div class="card h-100 about-card border-0 shadow-sm">
+              <div class="card-body text-center p-4">
+                <div
+                  class="rounded-circle bg-primary bg-opacity-10 p-3 d-inline-flex mb-3"
+                >
+                  <i class="fas fa-code fs-3 text-primary"></i>
+                </div>
+                <h4 class="fw-bold">Pengalaman</h4>
+                <p class="text-muted">
+                    Pengembang web full-stack dengan pengalaman membangun berbagai proyek menggunakan teknologi modern di front-end dan back-end.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="zoom-in">
+            <div class="card h-100 about-card border-0 shadow-sm">
+              <div class="card-body text-center p-4">
+                <div
+                  class="rounded-circle bg-primary bg-opacity-10 p-3 d-inline-flex mb-3"
+                >
+                  <i class="fas fa-graduation-cap fs-3 text-primary"></i>
+                </div>
+                <h4 class="fw-bold">Pendidikan</h4>
+                <p class="text-muted">
+                    Mahasiswa Teknik Informatika di Universitas Nurul Jadid dengan fokus pada Pengembangan Perangkat Lunak dan Desain UI/UX.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="zoom-in">
+            <div class="card h-100 about-card border-0 shadow-sm">
+              <div class="card-body text-center p-4">
+                <div
+                  class="rounded-circle bg-primary bg-opacity-10 p-3 d-inline-flex mb-3"
+                >
+                  <i class="fas fa-award fs-3 text-primary"></i>
+                </div>
+                <h4 class="fw-bold">Sertifikasi</h4>
+                <p class="text-muted">
+                    Menguasai JavaScript, Vue.js, dan Laravel, serta berbagai teknologi pengembangan web untuk membangun aplikasi yang responsif dan efisien.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-5">
+          <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+            <h3 class="fw-bold mb-4">Siapa Saya</h3>
+            <p>
+              Sebagai seorang Web Developer berpengalaman, saya memiliki passion
+              untuk menciptakan pengalaman digital yang menarik dan fungsional.
+              Dengan pengetahuan mendalam tentang teknologi front-end dan
+              back-end, saya mampu mengembangkan solusi web yang tidak hanya
+              terlihat bagus, tetapi juga berfungsi dengan baik.
+            </p>
+            <p>
+              Saya percaya bahwa pengembangan web yang baik adalah tentang
+              keseimbangan antara estetika, fungsi, dan kinerja. Pendekatan saya
+              selalu berpusat pada pengguna, berusaha menciptakan produk yang
+              tidak hanya memenuhi kebutuhan bisnis tetapi juga memberikan
+              pengalaman pengguna yang luar biasa.
+            </p>
+          </div>
+          <div class="col-lg-6">
+            <div class="card border-0 shadow-sm" data-aos="fade-left">
+              <div class="card-body p-4">
+                <h4 class="fw-bold mb-3">Informasi Pribadi</h4>
+                <div class="row mb-3">
+                  <div class="col-sm-4">
+                    <p class="fw-bold mb-0">Nama:</p>
+                  </div>
+                  <div class="col-sm-8">
+                    <p class="text-muted mb-0">Muh Noval Fuaddillah</p>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-sm-4">
+                    <p class="fw-bold mb-0">Email:</p>
+                  </div>
+                  <div class="col-sm-8">
+                    <p class="text-muted mb-0">muhnovalfuaddillah@gmail.com</p>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-sm-4">
+                    <p class="fw-bold mb-0">Telepon:</p>
+                  </div>
+                  <div class="col-sm-8">
+                    <p class="text-muted mb-0">+62 819 3144 7338</p>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-sm-4">
+                    <p class="fw-bold mb-0">Lokasi:</p>
+                  </div>
+                  <div class="col-sm-8">
+                    <p class="text-muted mb-0">Probolinggo, Indonesia</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-4">
+                    <p class="fw-bold mb-0">Bahasa:</p>
+                  </div>
+                  <div class="col-sm-8">
+                    <p class="text-muted mb-0">Indonesia, Inggris</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-5 bg-light">
+      <div class="container py-5">
+        <div class="row justify-content-center mb-5">
+          <div class="col-lg-6 text-center">
+            <h2 class="fw-bold mb-3">Proyek Terbaru</h2>
+            <p class="text-muted">
+              Koleksi karya terbaik saya dalam pengembangan web
+            </p>
+          </div>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-4" >
+            <div class="card project-card border-0 shadow-sm h-100">
+              <img
+                src="https://i.pinimg.com/736x/c6/0c/0c/c60c0c960a41d79213ba0460726b90a5.jpg"
+                class="card-img-top project-img"
+                alt="Proyek E-commerce"
+              />
+              <div class="card-body p-4" >
+                <span class="badge bg-primary mb-2">Web App</span>
+                <h4 class="fw-bold">Platform E-commerce</h4>
+                <p class="text-muted">
+                  Mengembangkan platform e-commerce modern dengan React,
+                  Node.js, dan MongoDB untuk meningkatkan penjualan online
+                  klien.
+                </p>
+                <div class="d-flex pt-2 mt-auto">
+                  <a href="#" class="btn btn-sm btn-outline-primary me-2"
+                    >Lihat Demo</a
+                  >
+                  <a href="#" class="btn btn-sm btn-outline-secondary"
+                    >Kode Sumber</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4" >
+            <div class="card project-card border-0 shadow-sm h-100">
+              <img
+                src="https://i.pinimg.com/736x/0c/1d/83/0c1d83fb7783bfdf2b4bae175e6720e7.jpg"
+                class="card-img-top project-img"
+                alt="Aplikasi Manajemen Tugas"
+              />
+              <div class="card-body p-4">
+                <span class="badge bg-success mb-2">Mobile App</span>
+                <h4 class="fw-bold">Aplikasi Manajemen Tugas</h4>
+                <p class="text-muted">
+                  Aplikasi manajemen tugas yang responsif dengan React Native
+                  dan Firebase, memungkinkan pengguna mengelola tugas dari mana
+                  saja.
+                </p>
+                <div class="d-flex pt-2 mt-auto">
+                  <a href="#" class="btn btn-sm btn-outline-primary me-2"
+                    >Lihat Demo</a
+                  >
+                  <a href="#" class="btn btn-sm btn-outline-secondary"
+                    >Kode Sumber</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4" >
+            <div class="card project-card border-0 shadow-sm h-100">
+              <img
+                src= "https://i.pinimg.com/736x/9b/93/47/9b93475af1154eea8dd4914233b37ca3.jpg"
+                class="card-img-top project-img"
+                alt="Website Perusahaan"
+              />
+              <div class="card-body p-4">
+                <span class="badge bg-warning text-dark mb-2">Website</span>
+                <h4 class="fw-bold">Website Perusahaan</h4>
+                <p class="text-muted">
+                  Website perusahaan yang elegan dan responsif menggunakan
+                  HTML5, CSS3, dan JavaScript untuk memberikan pengalaman
+                  pengguna yang optimal.
+                </p>
+                <div class="d-flex pt-2 mt-auto">
+                  <a href="#" class="btn btn-sm btn-outline-primary me-2"
+                    >Lihat Demo</a
+                  >
+                  <a href="#" class="btn btn-sm btn-outline-secondary"
+                    >Kode Sumber</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4" >
+            <div class="card project-card border-0 shadow-sm h-100">
+              <img
+                src="asset/dasbord admin.png"
+                class="card-img-top project-img"
+                alt="Dashboard Admin"
+              />
+              <div class="card-body p-4">
+                <span class="badge bg-danger mb-2">Dashboard</span>
+                <h4 class="fw-bold">Dashboard Admin</h4>
+                <p class="text-muted">
+                  Dashboard admin yang komprehensif dengan Vue.js dan Laravel,
+                  menyediakan antarmuka intuitif untuk pengelolaan konten.
+                </p>
+                <div class="d-flex pt-2 mt-auto">
+                  <a href="#" class="btn btn-sm btn-outline-primary me-2"
+                    >Lihat Demo</a
+                  >
+                  <a href="#" class="btn btn-sm btn-outline-secondary"
+                    >Kode Sumber</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4" data-aos="fade-up">
+            <div class="card project-card border-0 shadow-sm h-100">
+              <img
+                src="https://i.pinimg.com/736x/63/23/e6/6323e63feb46f5094dc2733decbb5ae7.jpg"
+                class="card-img-top project-img"
+                alt="Aplikasi Booking"
+              />
+              <div class="card-body p-4">
+                <span class="badge bg-info text-dark mb-2">Web App</span>
+                <h4 class="fw-bold">Sistem Booking Online</h4>
+                <p class="text-muted">
+                  Sistem booking online yang andal dengan Angular dan Express.js
+                  untuk industri perhotelan, meningkatkan efisiensi 45%.
+                </p>
+                <div class="d-flex pt-2 mt-auto">
+                  <a href="#" class="btn btn-sm btn-outline-primary me-2"
+                    >Lihat Demo</a
+                  >
+                  <a href="#" class="btn btn-sm btn-outline-secondary"
+                    >Kode Sumber</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4" >
+            <div class="card project-card border-0 shadow-sm h-100">
+              <img
+                src="https://i.pinimg.com/474x/99/9d/4c/999d4c97c933139e6b2d05e71a049a69.jpg"
+                class="card-img-top project-img"
+                alt="PWA"
+              />
+              <div class="card-body p-4">
+                <span class="badge bg-primary mb-2">PWA</span>
+                <h4 class="fw-bold">Progressive Web App</h4>
+                <p class="text-muted">
+                  Progressive Web App untuk portal berita lokal yang
+                  meningkatkan keterlibatan pengguna dan menyediakan akses
+                  offline.
+                </p>
+                <div class="d-flex pt-2 mt-auto">
+                  <a href="#" class="btn btn-sm btn-outline-primary me-2"
+                    >Lihat Demo</a
+                  >
+                  <a href="#" class="btn btn-sm btn-outline-secondary"
+                    >Kode Sumber</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-5 bg-light">
+        <div class="container">
+          <div class="row justify-content-center mb-4">
+            <div class="col-lg-6 text-center" data-aos="fade-up">
+              <h2 class="fw-bold">Kemampuan</h2>
+              <p class="text-muted">
+                Keahlian yang saya kuasai dalam pengembangan web dan teknologi digital.
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6" data-aos="fade-right">
+              <h4 class="fw-bold">Keahlian Utama</h4>
+              <p>
+                Saya memiliki pengalaman dalam berbagai teknologi web modern, mulai dari frontend hingga backend.
+              </p>
+            </div>
+            <div class="col-md-6">
+              <div class="row">
+                <div class="col-md-12" data-aos="fade-left">
+                  <h6>HTML & CSS</h6>
+                  <div class="progress mb-3">
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100">
+                      95%
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12" data-aos="fade-left" data-aos-delay="100">
+                  <h6>JavaScript</h6>
+                  <div class="progress mb-3">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
+                      85%
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12" data-aos="fade-left" data-aos-delay="200">
+                  <h6>Vue.js</h6>
+                  <div class="progress mb-3">
+                    <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
+                      80%
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12" data-aos="fade-left" data-aos-delay="300">
+                  <h6>Laravel</h6>
+                  <div class="progress mb-3">
+                    <div class="progress-bar bg-warning text-dark" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                      75%
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12" data-aos="fade-left" data-aos-delay="400">
+                  <h6>PHP & MySQL</h6>
+                  <div class="progress mb-3">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
+                      85%
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12" data-aos="fade-left" data-aos-delay="500">
+                  <h6>UI/UX Design</h6>
+                  <div class="progress mb-3">
+                    <div class="progress-bar bg-secondary" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+                      70%
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      >
+
+    <section id="contact" class="py-5 bg-light">
+        <div class="container py-5">
+          <div class="row justify-content-center mb-5">
+            <div class="col-lg-6 text-center">
+              <h2 class="fw-bold mb-3">Hubungi Saya</h2>
+              <p class="text-muted">
+                Tertarik untuk bekerja sama? Jangan ragu untuk menghubungi saya
+              </p>
+            </div>
+          </div>
+          <div class="row g-4">
+            <div class="col-md-5" data-aos="fade-up">
+              <div class="card border-0 shadow-sm p-4">
+                <h4 class="fw-bold mb-4">Informasi Kontak</h4>
+                <div class="contact-card d-flex align-items-center mb-4">
+                  <div class="contact-icon">
+                    <i class="fas fa-envelope"></i>
+                  </div>
+                  <div class="ms-3">
+                    <h5 class="fw-bold">Email</h5>
+                    <p class="text-muted mb-0">muhnovalfuaddillah@gmail.com</p>
+                  </div>
+                </div>
+                <div class="contact-card d-flex align-items-center mb-4">
+                  <div class="contact-icon">
+                    <i class="fas fa-phone"></i>
+                  </div>
+                  <div class="ms-3">
+                    <h5 class="fw-bold">Telepon</h5>
+                    <p class="text-muted mb-0">+62 819 3144 7338</p>
+                  </div>
+                </div>
+                <div class="contact-card d-flex align-items-center">
+                  <div class="contact-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                  </div>
+                  <div class="ms-3">
+                    <h5 class="fw-bold">Lokasi</h5>
+                    <p class="text-muted mb-0">Probolinggo, Indonesia</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-7" data-aos="fade-up">
+                <div class="card border-0 shadow-sm p-4">
+                  <h4 class="fw-bold mb-4">Kirim Pesan</h4>
+                  <form onsubmit="sendToWhatsApp(event)">
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                          <input type="text" class="form-control" id="name" placeholder="Nama Anda" required />
+                          <label for="name">Nama Lengkap</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                          <input type="email" class="form-control" id="email" placeholder="Email Anda" required />
+                          <label for="email">Alamat Email</label>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="form-floating mb-3">
+                          <input type="text" class="form-control" id="subject" placeholder="Subjek" required />
+                          <label for="subject">Subjek</label>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="form-floating mb-3">
+                          <textarea class="form-control" placeholder="Pesan Anda" id="message" style="height: 150px" required></textarea>
+                          <label for="message">Pesan</label>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <button type="submit" class="btn btn-primary btn-lg w-100">Kirim Pesan</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+          </div>
+        </div>
+      </section>
+
+    <!-- Footer Section -->
+    <footer class="py-4 bg-primary text-white">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-md-4 text-center text-md-start">
+              <h4 class="fw-bold mb-2">Vall.Dev_</h4>
+              <p class="small mb-0">Membangun solusi digital terbaik untuk Anda.</p>
+            </div>
+            
+            <div class="col-md-4 text-center my-3 my-md-0">
+              <ul class="list-unstyled d-flex justify-content-center gap-3 mb-0">
+                <li class="nav-item">
+                  <a class="nav-link" href="#hero">Beranda</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#about">Tentang</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#projects">Proyek</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#skills">Keahlian</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#contact">Kontak</a>
+                </li>
+              </ul>
+            </div>
+            
+            <div class="col-md-4 text-center text-md-end">
+              <div class="d-flex justify-content-center justify-content-md-end gap-3 ">
+                <a href="https://github.com/MUHNOVALFUADILLAH" class="social-icon text-decoration-none"><i class="fab fa-github "></i></a>
+                <a href="https://www.youtube.com/@Noval_Fuad" class="social-icon text-decoration-none "><i class="fab fa-youtube"></i></a>
+                <a href="https://www.instagram.com/vall.dev_/" class="social-icon text-decoration-none"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@vall.dev_" class="social-icon text-decoration-none"><i class="fab fa-tiktok"></i></a>
+              </div>
+            </div>
+          </div>
+          
+          <hr class="my-3 border-secondary">
+          
+          <div class="text-center small">
+            &copy; <span id="year"></span> Vall.Dev_ | All Rights Reserved
+          </div>
+        </div>
+      </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+<script>
+    VANTA.GLOBE({
+      el: "#hero",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      color: 0x0000ff, // Warna efek biru
+      backgroundColor: 0x000000, // Latar belakang hitam
+      size: 1.2 // Ukuran bola energi
+    });
+  </script>
+  
+
+
+    <script>
+      function animate() {
+        requestAnimationFrame(animate);
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+        renderer.render(scene, camera);
+      }
+    </script>
+    <script>
+        const card = document.querySelector('.card');
+        let isDragging = false;
+        let startX, startY, rotX = 0, rotY = 0, lastRotX = 0, lastRotY = 0;
+        
+        // Click and drag to rotate
+        card.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            card.classList.add('dragging');
+            startX = e.clientX;
+            startY = e.clientY;
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+            
+            rotY = lastRotY + deltaX * 0.5;
+            rotX = lastRotX - deltaY * 0.5;
+            
+            // Limit rotation to prevent excessive spinning
+            rotX = Math.max(-30, Math.min(30, rotX));
+            
+            updateCardTransform();
+        });
+        
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            card.classList.remove('dragging');
+            lastRotX = rotX;
+            lastRotY = rotY;
+        });
+        
+        // Double-click to flip
+        card.addEventListener('dblclick', () => {
+            if (card.style.transform.includes('rotateY(180deg)')) {
+                card.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+            } else {
+                card.style.transform = `rotateX(${rotX}deg) rotateY(${rotY + 180}deg)`;
+            }
+        });
+        
+        // Reset on mouse leave
+        document.addEventListener('mouseleave', () => {
+            if (isDragging) {
+                isDragging = false;
+                card.classList.remove('dragging');
+                lastRotX = rotX;
+                lastRotY = rotY;
+            }
+        });
+        
+        function updateCardTransform() {
+            card.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+        }
+        
+        // Add a subtle animation on load
+        setTimeout(() => {
+            rotY = 5;
+            rotX = -5;
+            lastRotX = rotX;
+            lastRotY = rotY;
+            updateCardTransform();
+        }, 500);
+      </script>
+     <script>
+        const text = "Muh Noval Fuaddillah";
+        let i = 0;
+        let isDeleting = false;
+    
+        function typeWriter() {
+            const element = document.getElementById("typed-text");
+            
+            if (!isDeleting && i <= text.length) {
+                element.innerHTML = text.substring(0, i);
+                i++;
+            } else if (isDeleting && i >= 0) {
+                element.innerHTML = text.substring(0, i);
+                i--;
+            }
+    
+            if (i === text.length) {
+                isDeleting = true;
+                setTimeout(typeWriter, 1000); // Tunggu sebelum mulai menghapus
+            } else if (i === 0) {
+                isDeleting = false;
+                setTimeout(typeWriter, 500); 
+            } else {
+                setTimeout(typeWriter, isDeleting ? 50 : 100); 
+            }
+        }
+    
+        typeWriter();
+    </script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
+<script>
+    function sendToWhatsApp(event) {
+      event.preventDefault(); 
+  
+   
+      let name = document.getElementById("name").value;
+      let email = document.getElementById("email").value;
+      let subject = document.getElementById("subject").value;
+      let message = document.getElementById("message").value;
+  
+      
+      let phoneNumber = "6281931447338";
+  
+      let whatsappMessage = `Halo, saya ${name}.\nEmail: ${email}\nSubjek: ${subject}\nPesan: ${message}`;
+  
+      let encodedMessage = encodeURIComponent(whatsappMessage);
+
+      window.location.href = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+    }
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+    
+  </body>
+</html> 
